@@ -47,9 +47,14 @@ export default function Home() {
       Swal.fire("Erreur", "Échec de l'upload", "error");
     }
   };
-  const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileMp3 = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    setFile(file ? file.name : null);
+    setMp3(file || null);
+  };
+
+  const handleFilePdf = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setPdf(file || null);
   };
 
   return (
@@ -77,10 +82,12 @@ export default function Home() {
               id="pdf"
               accept=".pdf"
               type="file"
-              onChange={handleFile}
+              onChange={handleFilePdf}
               className="hidden"
             />
-            <p className="mt-2 text-gray-600">{file}</p>
+            <p className="mt-2 text-gray-600">
+              {pdfPath ? pdfPath.name : "aucune fichier selectionner"}
+            </p>
           </div>
           <label htmlFor="mp3" className="m-4 text-left  text-black">
             Fichier MP3 :
@@ -96,10 +103,12 @@ export default function Home() {
               id="mp3"
               accept=".mp3"
               type="file"
-              onChange={handleFile}
+              onChange={handleFileMp3}
               className="hidden"
             />
-            <p className="mt-2 text-gray-600">{file}</p>
+            <p className="mt-2 text-gray-600">
+              {mp3Path ? mp3Path.name : "aucune fichier selectionner"}
+            </p>
           </div>
           <button
             onClick={handleUpload}

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=concourChant
+      - DB_USER=postgres
+      - DB_PASSWORD=noah1112
+      - DB_SSL=false
+      - PORT=5000
+    depends_on:
+      db: 
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
+  db:
+    image: postgres:latest
+    container_name: database
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=noah1112
+      - POSTGRES_DB=concourChant
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  pg_data:

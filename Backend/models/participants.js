@@ -12,7 +12,15 @@ const Participant = sequelize.define('Participant', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    mp3: {
+    instru_mp3: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    akapela_mp3: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    final_mp3: {
         type: DataTypes.STRING,
         allowNull: false
     },

@@ -19,7 +19,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).fields([
   { name: "pdf", maxCount: 1 },
-  { name: "mp3", maxCount: 1 },
+  { name: "instru_mp3", maxCount: 1 },
+  { name: "akapela_mp3", maxCount: 1 },
+  { name: "final_mp3", maxCount: 1 },
 ]);
 
 async function downloadFile(req, res) {
@@ -35,16 +37,20 @@ async function downloadFile(req, res) {
 
 async function uploadFiles(req, res) {
   try {
-    if (!req.files || !req.files["pdf"] || !req.files["mp3"]) {
+    if (!req.files || !req.files["pdf"] || !req.files["instru_mp3"] || !req.files["akapela_mp3"] || !req.files["final_mp3"] ) {
       return res.status(400).json({ error: "Fichiers PDF et MP3 requis" });
     }
 
     const pdfPath = req.files["pdf"][0].path;
-    const mp3Path = req.files["mp3"][0].path;
+    const instru_mp3Path = req.files["instru_mp3"][0].path;
+    const akapela_mp3Path = req.files["akapela_mp3"][0].path;
+    const final_mp3Path = req.files["final_mp3"][0].path;
 
     const participant = await participantService.createParticipant(
       pdfPath,
-      mp3Path
+      instru_mp3Path,
+      akapela_mp3Path,
+      final_mp3Path
     );
 
     res.json({ participantID: participant.id });
@@ -75,7 +81,9 @@ async function deleteParticipant(req, res) {
     }
 
     const pdfPath = path.join(__dirname, "..", participant.pdf);
-    const mp3Path = path.join(__dirname, "..", participant.mp3);
+    const instru_mp3 = path.join(__dirname, "..", participant.mp3);
+    const akapela_mp3 = path.join(__dirname, "..", participant.mp3);
+    const final_mp3 = path.join(__dirname, "..", participant.mp3);
 
     if (fs.existsSync(pdfPath)) {
       fs.unlinkSync(pdfPath);
@@ -83,10 +91,10 @@ async function deleteParticipant(req, res) {
       console.log("fichier intouvable", pdfPath);
     }
 
-    if (fs.existsSync(mp3Path)) {
-      fs.unlinkSync(mp3Path);
+    if (fs.existsSync(instru_mp3, akapela_mp3, final_mp3)) {
+      fs.unlinkSync(instru_mp3, akapela_mp3, final_mp3);
     } else {
-      console.log("fichier intouvable", mp3Path);
+      console.log("fichier intouvable", instru_mp3, akapela_mp3, final_mp3);
     }
 
     await participantService.deleteParticipant(id);

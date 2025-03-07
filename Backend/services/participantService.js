@@ -3,13 +3,15 @@ const Participant = require("../models/participants");
 const { where } = require("sequelize");
 
 
-async function createParticipant(pdfPath, mp3Path) {
+async function createParticipant(pdfPath, instru_mp3Path, akapela_mp3Path, final_mp3Path) {
     const participantID = Math.floor(1000 + Math.random() * 9999);
 
     const participant = await Participant.create({
         id: participantID,
         pdf: pdfPath,
-        mp3: mp3Path,
+        instru_mp3: instru_mp3Path,
+        akapela_mp3: akapela_mp3Path,
+        final_mp3: final_mp3Path,
         timestamp: new Date(),
     })
 

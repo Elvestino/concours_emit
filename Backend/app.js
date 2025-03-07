@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const participanRoutes = require("./routes/participantRoutes");
+const authRoutes = require("./routes/authRoute");
+
 const sequelize = require("./config/database");
 require("dotenv").config();
 
@@ -30,6 +32,7 @@ app.use(
 );
 app.use(express.json());
 
+// participant Routes
 app.use(
   "/api",
   (req, res, next) => {
@@ -38,6 +41,11 @@ app.use(
   },
   participanRoutes
 );
+
+// Authentification Routes
+app.use("/api/auth", authRoutes)
+
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(

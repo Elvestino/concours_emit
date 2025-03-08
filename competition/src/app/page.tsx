@@ -10,19 +10,22 @@ import Footer from "./components/footer";
 export default function Home() {
   const [pdfPath, setPdf] = useState<File | null>(null);
   const [mp3Path, setMp3] = useState<File | null>(null);
-  const [file, setFile] = useState<string | null>(null);
+  const [mp3PathInstru, setMp3Instru] = useState<File | null>(null);
+  const [mp3PathMusic, setMp3Music] = useState<File | null>(null);
 
   const handleUpload = async () => {
-    if (!pdfPath || !mp3Path) {
-      Swal.fire("Erreur", "Veuillez ajouter un PDF et un MP3", "error");
+    if (!pdfPath || !mp3Path || !mp3PathMusic || !mp3PathInstru) {
+      Swal.fire("Hadisoana", "Azafady, ampio rakitra PDF sy MP3", "error");
       return;
     }
 
     const formData = new FormData();
     formData.append("pdf", pdfPath);
     formData.append("mp3", mp3Path);
+    formData.append("mp3", mp3PathInstru);
+    formData.append("mp3", mp3PathMusic);
 
-    console.log("FormData envoyé :", [...formData.entries()]);
+    console.log("FormData lasa :", [...formData.entries()]);
 
     try {
       const response = await axios.post(`${API_URL}/upload`, formData, {
@@ -34,8 +37,8 @@ export default function Home() {
       const participantID = response.data.participantID;
       Swal.fire({
         icon: "success",
-        title: `Identifiant : ${participantID}`,
-        html: ` <strong> &#9888;  Veuiller ne pas perdre votre identifiant </strong>`,
+        title: `Laharana : ${participantID}`,
+        html: ` <strong> &#9888; Azafady, tandremo very ny laharana anao </strong>`,
       }).then(() => {
         window.location.reload();
       });
@@ -44,12 +47,20 @@ export default function Home() {
       setMp3(null);
     } catch (error) {
       console.log(error);
-      Swal.fire("Erreur", "Échec de l'upload", "error");
+      Swal.fire("Hadisoana", "Tsy nahomby ny fametrahana rakitra", "error");
     }
   };
   const handleFileMp3 = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     setMp3(file || null);
+  };
+  const handleFileMp3Instru = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setMp3Instru(file || null);
+  };
+  const handleFileMp3Music = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setMp3Music(file || null);
   };
 
   const handleFilePdf = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,19 +75,19 @@ export default function Home() {
         <div className="flex items-center justify-center mx-14 m-8 lg:mx-20 md:mx-3">
           <BarList />
         </div>
-        <div className="flex flex-col border rounded-xl text-center p-9 mx-20 mb-10 mt-10 lg:mx-40 md:mx-10 ">
-          <h1 className="lg:text-2xl text-xl font-bold mb-4 text-black">
-            Ajout de fichiers
+        <div className="flex flex-col bg-white shadow-lg rounded-xl text-center p-9 mx-20 mt-5 lg:mx-40 md:mx-10 ">
+          <h1 className="lg:text-2xl text-xl font-bold mb-2 text-black">
+            Fampidirana rakitra
           </h1>
-          <label htmlFor="pdf" className="m-4 text-left  text-black">
-            Fichier PDF :
+          <label htmlFor="pdf" className="mb-1 text-left  text-black">
+            Rakitra PDF :
           </label>
           <div className="w-full">
             <label
               htmlFor="pdf"
               className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
             >
-              Selectionner un fichier
+              Mifidiana rakitra
             </label>
             <input
               id="pdf"
@@ -86,18 +97,62 @@ export default function Home() {
               className="hidden"
             />
             <p className="mt-2 text-gray-600">
-              {pdfPath ? pdfPath.name : "aucune fichier selectionner"}
+              {pdfPath ? pdfPath.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
-          <label htmlFor="mp3" className="m-4 text-left  text-black">
-            Fichier MP3 :
+          <label htmlFor="mp3" className="mb-1 text-left  text-black">
+            Rakitra feon-kira :
           </label>
-          <div className="w-full mb-4">
+          <div className="w-full mb-2">
             <label
               htmlFor="mp3"
               className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
             >
-              Selectionner un fichier
+              Mifidiana rakitra
+            </label>
+            <input
+              id="mp3"
+              accept=".mp3"
+              type="file"
+              onChange={handleFileMp3Instru}
+              className="hidden"
+            />
+            <p className="mt-2 text-gray-600">
+              {mp3PathInstru
+                ? mp3PathInstru.name
+                : "Tsy misy rakitra voafantina"}
+            </p>
+          </div>
+          <label htmlFor="mp3" className="mb-1 text-left  text-black">
+            Rakitra feo tsisy feonkira :
+          </label>
+          <div className="w-full mb-2">
+            <label
+              htmlFor="mp3"
+              className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
+            >
+              Mifidiana rakitra
+            </label>
+            <input
+              id="mp3"
+              accept=".mp3"
+              type="file"
+              onChange={handleFileMp3Music}
+              className="hidden"
+            />
+            <p className="mt-2 text-gray-600">
+              {mp3PathMusic ? mp3PathMusic.name : "Tsy misy rakitra voafantina"}
+            </p>
+          </div>
+          <label htmlFor="mp3" className="mb-1 text-left  text-black">
+            Rakitra hira :
+          </label>
+          <div className="w-full mb-2">
+            <label
+              htmlFor="mp3"
+              className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
+            >
+              Mifidiana rakitra
             </label>
             <input
               id="mp3"
@@ -107,18 +162,20 @@ export default function Home() {
               className="hidden"
             />
             <p className="mt-2 text-gray-600">
-              {mp3Path ? mp3Path.name : "aucune fichier selectionner"}
+              {mp3Path ? mp3Path.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
           <button
             onClick={handleUpload}
             className="bg-blue-500 text-white p-2 rounded font-semibold hover:bg-blue-600"
           >
-            Ajouter
+            Manamarina
           </button>
         </div>
       </div>
-      <Footer />
+      <div className="md:mt-5">
+        <Footer />
+      </div>
     </main>
   );
 }

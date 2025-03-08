@@ -10,11 +10,11 @@ import Footer from "./components/footer";
 export default function Home() {
   const [pdfPath, setPdf] = useState<File | null>(null);
   const [mp3Path, setMp3] = useState<File | null>(null);
-  const [mp3PathInstru, setMp3Instru] = useState<File | null>(null);
-  const [mp3PathMusic, setMp3Music] = useState<File | null>(null);
+  const [instru_mp3, setMp3Instru] = useState<File | null>(null);
+  const [akapela_mp3, setMp3Music] = useState<File | null>(null);
 
   const handleUpload = async () => {
-    if (!pdfPath || !mp3Path || !mp3PathMusic || !mp3PathInstru) {
+    if (!pdfPath || !mp3Path || !akapela_mp3 || !instru_mp3) {
       Swal.fire("Hadisoana", "Azafady, ampio rakitra PDF sy MP3", "error");
       return;
     }
@@ -22,8 +22,8 @@ export default function Home() {
     const formData = new FormData();
     formData.append("pdf", pdfPath);
     formData.append("mp3", mp3Path);
-    formData.append("mp3", mp3PathInstru);
-    formData.append("mp3", mp3PathMusic);
+    formData.append("mp3", instru_mp3);
+    formData.append("mp3", akapela_mp3);
 
     console.log("FormData lasa :", [...formData.entries()]);
 
@@ -118,9 +118,7 @@ export default function Home() {
               className="hidden"
             />
             <p className="mt-2 text-gray-600">
-              {mp3PathInstru
-                ? mp3PathInstru.name
-                : "Tsy misy rakitra voafantina"}
+              {instru_mp3 ? instru_mp3.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
           <label htmlFor="mp3" className="mb-1 text-left  text-black">
@@ -141,7 +139,7 @@ export default function Home() {
               className="hidden"
             />
             <p className="mt-2 text-gray-600">
-              {mp3PathMusic ? mp3PathMusic.name : "Tsy misy rakitra voafantina"}
+              {akapela_mp3 ? akapela_mp3.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
           <label htmlFor="mp3" className="mb-1 text-left  text-black">

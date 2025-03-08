@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 interface Upload {
   id: number;
   pdf: string;
-  mp3: string;
-  instru: string;
-  music: string;
+  final_mp3: string;
+  instru_mp3: string;
+  akapela_mp3: string;
   accepted: boolean;
 }
 
@@ -52,14 +52,19 @@ export default function AdminPage() {
       const response = await axios.get(`${API_URL}/admin/listes`);
       const fixedData = response.data.map((upload: Upload) => ({
         ...upload,
-        accepted: upload.accepted === true ? true : upload.accepted === false ? false : null, 
+        accepted:
+          upload.accepted === true
+            ? true
+            : upload.accepted === false
+            ? false
+            : null,
       }));
       setUploads(fixedData);
       console.log("useEffect", response.data);
     };
-  
+
     fetchUploads();
-  
+
     socket.on("participantAccepted", (updatedParticipant: any) => {
       console.log("participant accepted : ", updatedParticipant);
       setUploads((prevUploads) =>
@@ -70,41 +75,42 @@ export default function AdminPage() {
         )
       );
     });
-  
+
     socket.on("participantDeleted", (deletedParticipant: any) => {
       console.log("participant deleted : ", deletedParticipant);
       setUploads((prevUploads) =>
         prevUploads.filter((u) => u.id !== deletedParticipant.id)
       );
     });
-  
+
     socket.on("participantReset", () => {
       console.log("réinitialisation des participants");
       fetchUploads();
     });
-  
+
     return () => {
       socket.disconnect();
     };
   }, []);
-  
+
   useEffect(() => {
     let filtered = uploads;
-    
+
     if (statusFilter !== "all") {
-      filtered = uploads.filter((upload) =>
-        statusFilter === "Accepter"
-          ? upload.accepted === true
-          : statusFilter === "Non accepter"
-          ? upload.accepted === false
-          : upload.accepted === null // Pour "Non traiter"
+      filtered = uploads.filter(
+        (upload) =>
+          statusFilter === "Accepter"
+            ? upload.accepted === true
+            : statusFilter === "Non accepter"
+            ? upload.accepted === false
+            : upload.accepted === null // Pour "Non traiter"
       );
     }
-  
+
     setFilteredUploads(filtered);
     setCurrentPage(1);
   }, [statusFilter, uploads]);
-  
+
   const handleAccept = async (upload: Upload) => {
     try {
       await axios.patch(`${API_URL}/participant/${upload.id}/accept`, {
@@ -269,39 +275,39 @@ export default function AdminPage() {
                       Alaina PDF
                     </a>
                   </td>
-                  {/* Lien de téléchargement pour le fichier instru  */}
+                  {/* Lien de téléchargement pour le fichier instru_mp3  */}
                   <td className="p-3 border-b">
                     <div className="flex justify-center">
-                      <audio controls key={upload.instru}>
+                      <audio controls key={upload.instru_mp3}>
                         <source
-                          src={`${`http://localhost:5000/${upload.instru}`}`}
+                          src={`${`http://localhost:5000/${upload.instru_mp3}`}`}
                           type="audio/mp3"
                         />
-                        {upload.mp3}
+                        {upload.instru_mp3}
                       </audio>
                     </div>
                   </td>
-                  {/* Lien de téléchargement pour le fichier MP3 */}
+                  {/* Lien de téléchargement pour le fichier akapela */}
                   <td className="p-3 border-b">
                     <div className="flex justify-center">
-                      <audio controls key={upload.music}>
+                      <audio controls key={upload.akapela_mp3}>
                         <source
-                          src={`${`http://localhost:5000/${upload.music}`}`}
+                          src={`${`http://localhost:5000/${upload.akapela_mp3}`}`}
                           type="audio/mp3"
                         />
-                        {upload.mp3}
+                        {upload.akapela_mp3}
                       </audio>
                     </div>
                   </td>
-                  {/* Lien de téléchargement pour le fichier hira */}
+                  {/* Lien de téléchargement pour le fichier hira mp3 */}
                   <td className="p-3 border-b">
                     <div className="flex justify-center">
-                      <audio controls key={upload.mp3}>
+                      <audio controls key={upload.final_mp3}>
                         <source
-                          src={`${`http://localhost:5000/${upload.mp3}`}`}
+                          src={`${`http://localhost:5000/${upload.final_mp3}`}`}
                           type="audio/mp3"
                         />
-                        {upload.mp3}
+                        {upload.final_mp3}
                       </audio>
                     </div>
                   </td>
@@ -310,14 +316,21 @@ export default function AdminPage() {
                   <td className="p-3 border-b">
                     <span
                       className={`px-2 py-1 text-sm font-semibold rounded ${
-                        upload.accepted
-                          ? "bg-green-200 text-green-700"
-                          : "bg-yellow-200 text-yellow-700"
+                        upload.accepted === true
+                          ? "bg-green-200 text-green-700" // Accepter
+                          : upload.accepted === false
+                          ? "bg-red-200 text-red-700" // Non accepter
+                          : "bg-yellow-200 text-yellow-700" // Non traiter
                       }`}
                     >
-                      {upload.accepted === true ? "Accepter" : "Non traiter"}
+                      {upload.accepted === true
+                        ? "Accepter"
+                        : upload.accepted === false
+                        ? "Non accepter"
+                        : "Non traiter"}
                     </span>
                   </td>
+
                   {/* boutton accepter et refuser */}
                   <td className="p-3 border-b flex gap-2 justify-center">
                     <>

@@ -1,10 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -19,17 +19,18 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
-      if (data.token) {
-        // Si le token est présent, on stocke le token dans localStorage et redirige
-        localStorage.setItem("token", data.token);
-        router.push("/admin"); // Redirection vers la page admin
+
+      if (res.ok) {
+        // Si le login est correct et le token est renvoyé
+        localStorage.setItem("token", data.token); // Stocke le token dans le localStorage
+        router.push("/admin"); // Redirection vers la page Admin
       } else {
         // Si les informations sont incorrectes, on met à jour l'erreur
-        setError("Informations incorrectes");
+        setError(data.message || "Erreur lors de la connexion");
       }
     } catch (err) {
       // Gestion de l'erreur en cas de problème avec la requête
@@ -37,29 +38,16 @@ export default function Login() {
     }
   };
 
-  // Affiche une alerte si une erreur est présente
-  useEffect(() => {
-    if (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Erreur",
-        text: error,
-      });
-      // Réinitialiser l'erreur après l'affichage de l'alerte
-      setError("");
-    }
-  }, [error]);
-
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white border p-8 rounded-lg shadow-lg w-96">
-        <h1 className="text-2xl font-bold text-center mb-6"> Admin</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">Connexion Admin</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Nom d'utilisateur"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -76,6 +64,8 @@ export default function Login() {
             Se connecter
           </button>
         </form>
+
+        {error && <div className="mt-4 text-red-500 text-center">{error}</div>}
       </div>
     </div>
   );

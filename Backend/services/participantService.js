@@ -12,6 +12,7 @@ async function createParticipant(pdfPath, instru_mp3Path, akapela_mp3Path, final
         instru_mp3: instru_mp3Path,
         akapela_mp3: akapela_mp3Path,
         final_mp3: final_mp3Path,
+        status: "non traiter",
         timestamp: new Date(),
     })
 
@@ -23,25 +24,55 @@ async function getAllParticipants() {
     return await Participant.findAll();
 }
 
-async function deleteParticipant(id) {
-await Participant.destroy(
-    {where: {id}}
-    
-);
-console.log(id)
-}
-
 async function getParticipantById(id) {
     return await Participant.findByPk(id);
 }
 
+async function acceptedParticipant(id) {
+    const participant = await Participant.findByPk(id);
+
+    if(!participant){
+        throw new Error("participant introvable");
+    }
+
+    participant.status = "accepter";
+    await participant.save();
+
+    return participant;
+}
+
+async function deleteParticipant(id) {
+    const participant = await Participant.findByPk(id);
+    if(!participant){
+        throw new Error("participant introvable")
+    }
+
+    participant.status = "rejeter";
+    await participant.save();
+
+    return participant;
+}
+
+async function markAsRead(id) {
+    const participant = await Participant.findByPk(id);
+    if(!participant){
+        throw new Error("participant introvable")
+    }
+
+    participant.status = "en traitement";
+    await participant.save();
+
+    return participant;
+}
+
+
 async function resetParticipantAccepted() {
     await Participant.update(
-        { accepted: false},
-        { where: { accepted: true}}
+        { status: "non traiter"},
+        { where: { status: "accepter"}}
     );
 
     return await Participant.findAll();
 }
 
-module.exports = { createParticipant, getAllParticipants, deleteParticipant, getParticipantById, resetParticipantAccepted };
+module.exports = { createParticipant, getAllParticipants, markAsRead, acceptedParticipant, deleteParticipant, getParticipantById, resetParticipantAccepted };

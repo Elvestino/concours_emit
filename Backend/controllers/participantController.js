@@ -74,31 +74,9 @@ async function deleteParticipant(req, res) {
   const { id } = req.params;
 
   try {
-    const participant = await participantService.getParticipantById(id);
+    const participant = await participantService.deleteParticipant(id);
 
-    if (!participant) {
-      res.status(404).send("participant introuable");
-    }
-
-    const pdfPath = path.join(__dirname, "..", participant.pdf);
-    const instru_mp3 = path.join(__dirname, "..", participant.mp3);
-    const akapela_mp3 = path.join(__dirname, "..", participant.mp3);
-    const final_mp3 = path.join(__dirname, "..", participant.mp3);
-
-    if (fs.existsSync(pdfPath)) {
-      fs.unlinkSync(pdfPath);
-    } else {
-      console.log("fichier intouvable", pdfPath);
-    }
-
-    if (fs.existsSync(instru_mp3, akapela_mp3, final_mp3)) {
-      fs.unlinkSync(instru_mp3, akapela_mp3, final_mp3);
-    } else {
-      console.log("fichier intouvable", instru_mp3, akapela_mp3, final_mp3);
-    }
-
-    await participantService.deleteParticipant(id);
-    req.io.emit("participantDeleted", { id: participant.id });
+    req.io.emit("participantDeleted", { id: participant.id, status:"rejeter" });
 
     res.send("participant et fichier refuser");
   } catch (error) {
@@ -110,17 +88,11 @@ async function deleteParticipant(req, res) {
 async function acceptedParticipant(req, res) {
   const { id } = req.params;
   try {
-    const participant = await Participant.findByPk(id);
-    if (!participant) {
-      return res.status((404).send("introuvable"));
-    }
+    const participant = await participantService.acceptedParticipant(id);
 
-    participant.accepted = true;
-    await participant.save();
+    req.io.emit("participantAccepted", { id: participant.id, status: "accepter" });
 
-    req.io.emit("participantAccepted", { id: participant.id, accepted: true });
-
-    res.json({ message: "Participant accepter" });
+    res.json({ message: "Participant accepter", participant });
   } catch (error) {
     console.error("erreur de la recuperation des participants", error);
     res.status(500).send("erreur serveur");
@@ -133,8 +105,7 @@ async function resetParticipantAccepted(req, res) {
 
     req.io.emit(
       "participantReset",
-      { accepted: false },
-      { where: { accepted: true } }
+       { status: "non traiter" }
     );
 
     res.json({
@@ -147,6 +118,20 @@ async function resetParticipantAccepted(req, res) {
   }
 }
 
+async function markAsInProgress(req, res) {
+  const {id} = req.params;
+
+  try {
+    const participant = await participantService.markAsRead(id);
+
+    req.io.emit("participantInProgress", {id: participant.id, status: "en traitement"});
+    res.json({message:" en cours de traitement", participant})
+  }catch(error) {
+    console.error("erreurlors de la mis a jours du status", error);
+    res.status(500).send("erreur serveur");
+  }
+}
+
 module.exports = {
   uploadFiles,
   getParticipants,
@@ -155,4 +140,5 @@ module.exports = {
   deleteParticipant,
   acceptedParticipant,
   resetParticipantAccepted,
+  markAsInProgress
 };

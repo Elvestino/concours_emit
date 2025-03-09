@@ -9,7 +9,9 @@ router.post('/upload', participantController.upload, participantController.uploa
 
 router.get('/admin/listes',authMiddleware, participantController.getParticipants );
 
-router.delete('/participant/:id', authMiddleware, participantController.deleteParticipant , );
+router.patch('/participant/:id/reject', authMiddleware, participantController.deleteParticipant , );
+
+router.patch('/participant/:id/read', authMiddleware, participantController.markAsInProgress , );
 
 router.patch('/participant/:id/accept', authMiddleware, participantController.acceptedParticipant,  );
 

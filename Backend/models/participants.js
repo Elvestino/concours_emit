@@ -24,9 +24,9 @@ const Participant = sequelize.define('Participant', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    accepted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+    status: {
+        type: DataTypes.ENUM("non traiter", "en traitement","accepter", "rejeter"),
+        defaultValue: "non traiter",
     }
 });
 

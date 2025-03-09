@@ -21,3 +21,7 @@
 .animate-fade-in {
   animation: fade-in 0.8s ease-out forwards;
 }
+body {
+  @apply bg-cover bg-center bg-fixed;
+  background-image: url("/assets/images/fond4.jpg");
+}

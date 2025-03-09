@@ -15,7 +15,7 @@ const FooterItem: React.FC<FooterItemType> = ({
       <div className="text-black mt-4">
         <Link
           href={`${lien}`}
-          className="text-blue-700 hover:underline italic font-semibold text-xs md:text-xl underline"
+          className="text-gray-700 hover:underline italic font-semibold text-xs md:text-xl "
         >
           {`${contact}`}
         </Link>

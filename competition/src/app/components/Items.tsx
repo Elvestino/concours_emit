@@ -21,7 +21,7 @@ export const footerItems: FooterItemType[] = [
     imageSrc: "/assets/images/emifi.png",
     imageAlt: "logo EMIT",
     imageWidth: 200,
-    lien: "https://www.emit.mg",
+    lien: "https://www.facebook.com/profile.php?id=100063592256637",
     contact: "EMIFI",
   },
   {
@@ -30,6 +30,6 @@ export const footerItems: FooterItemType[] = [
     imageAlt: "logo EMITECH",
     imageWidth: 200,
     contact: "EMITECH",
-    lien: "contact@emitech.mg",
+    lien: "https://www.facebook.com/EmiTechUF",
   },
 ];

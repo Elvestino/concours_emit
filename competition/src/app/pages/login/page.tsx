@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Swal from "sweetalert2";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -14,7 +13,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/login", {
+      const res = await fetch(`http://localhost:5000/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,14 +26,20 @@ export default function Login() {
       if (res.ok) {
         // Si le login est correct et le token est renvoyé
         localStorage.setItem("token", data.token); // Stocke le token dans le localStorage
-        router.push("/admin"); // Redirection vers la page Admin
+        router.push("/pages/admin"); // Redirection vers la page Admin
+        console.log("token"  , data.token)
       } else {
         // Si les informations sont incorrectes, on met à jour l'erreur
         setError(data.message || "Erreur lors de la connexion");
       }
     } catch (err) {
       // Gestion de l'erreur en cas de problème avec la requête
-      setError("Une erreur est survenue");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Une erreur est survenue.")
+      }
+      
     }
   };
 
@@ -47,14 +52,14 @@ export default function Login() {
             type="text"
             placeholder="Nom d'utilisateur"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)} required
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="password"
             placeholder="Mot de passe"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)} required
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button

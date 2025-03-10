@@ -161,8 +161,10 @@ export default function AdminPage() {
     if (confirmation.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
+
+        console.log("token rejeter",token)
         await axios.patch(
-          `${API_URL}/participant/${upload.id}/reject`,
+          `${API_URL}/participant/${upload.id}/reject`, {},
           
           {
             headers: { Authorization: `Bearer ${token}` },

@@ -3,7 +3,7 @@ export default function BarList() {
     {
       id: 1,
       label:
-        "Fifaninanana karakarain'ny EMIFI ho an'ny hira fanevan'ny sekoly EMIT.",
+        "Fifaninanana iray karakarain'ny EMIFI hoan'ny hira fanevan'ny sekoly.",
     },
     {
       id: 2,

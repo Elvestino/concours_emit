@@ -85,7 +85,10 @@ export default function AdminPage() {
         });
         setUploads(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des participants :", error);
+        console.error(
+          "Erreur lors de la récupération des participants :",
+          error
+        );
       }
     };
 
@@ -132,14 +135,14 @@ export default function AdminPage() {
 
       Swal.fire({
         icon: "success",
-        title: "Participant accepté",
-        text: `Vous avez accepté ce participant avec le numéro ${upload.id}`,
+        title: "Mpandray anjara nekena",
+        text: `Nekenao ity mpandray anjara ity miaraka amin'ny laharana ${upload.id}`,
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Erreur",
-        text: "Une erreur s'est produite lors de l'acceptation du participant.",
+        title: "Hadisoana",
+        text: "Nisy hadisoana tamin'ny fankatoavana ny mpandray anjara.",
       });
       console.error("Erreur :", error);
     }
@@ -148,24 +151,25 @@ export default function AdminPage() {
   // Rejeter un participant
   const handleDelete = async (upload: Upload) => {
     const confirmation = await Swal.fire({
-      title: "Êtes-vous sûr ?",
-      text: `Voulez-vous vraiment rejeter le participant ${upload.id} ?`,
+      title: "Azonao antoka ve ?",
+      text: `Tena te-handava ny mpandray anjara ${upload.id} ve ianao ?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Rejeter",
-      cancelButtonText: "Annuler",
+      confirmButtonText: "Lavina",
+      cancelButtonText: "Hanafoana",
     });
 
     if (confirmation.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
 
-        console.log("token rejeter",token)
+        console.log("token rejeter", token);
         await axios.patch(
-          `${API_URL}/participant/${upload.id}/reject`, {},
-          
+          `${API_URL}/participant/${upload.id}/reject`,
+          {},
+
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -179,14 +183,14 @@ export default function AdminPage() {
 
         Swal.fire({
           icon: "success",
-          title: "Participant rejeté",
-          text: `Le participant ${upload.id} a été rejeté.`,
+          title: "Mpandray anjara nolavina",
+          text: `Nolavina ny mpandray anjara ${upload.id}.`,
         });
       } catch (error) {
         Swal.fire({
           icon: "error",
-          title: "Erreur",
-          text: "Une erreur s'est produite lors du rejet du participant.",
+          title: "Hadisoana",
+          text: "Nisy hadisoana tamin'ny fandavana ny mpandray anjara.",
         });
         console.error("Erreur:", error);
       }
@@ -212,14 +216,14 @@ export default function AdminPage() {
 
       Swal.fire({
         icon: "success",
-        title: "Réinitialisation réussie",
-        text: "Les statuts des candidats ont été réinitialisés.",
+        title: "Fanavaozana nahomby",
+        text: "Voavao ny toetoetran'ny kandida.",
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Erreur",
-        text: "Une erreur s'est produite lors de la réinitialisation.",
+        title: "Hadisoana",
+        text: "Nisy hadisoana tamin'ny fanavaozana.",
       });
       console.error("Erreur :", error);
     }
@@ -233,26 +237,26 @@ export default function AdminPage() {
   );
 
   if (isAdmin) {
-    return <p>Chargement...</p>;
+    return <p>Mampiditra...</p>;
   }
 
   return (
     <div className="flex flex-col w-full mt-4 animate-fade-in">
-      <h1 className="text-3xl font-bold flex justify-center text-center mb-4 text-black">
-        Liste des Participants
+      <h1 className="text-3xl font-bold flex justify-center text-center mb-4 text-white">
+        Lisitra ireo Mpandray anjara
       </h1>
       <div className="flex sm:flex-row justify-between items-center mx-4 my-4">
         {/* Filtre */}
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded px-3 py-2 text-black text-center"
+          className="border rounded px-3 py-2 text-black text-center cursor-pointer"
         >
-          <option value="all">Tous</option>
-          <option value="Accepter">Accepter</option>
-          <option value="Non traiter">Non traiter</option>
-          <option value="En traitement">En traitement</option>
-          <option value="Non accepter">Non accepter</option>
+          <option value="all">Rehetra</option>
+          <option value="Accepter">Nekena</option>
+          <option value="Non traiter">Tsy voahodina</option>
+          <option value="En traitement">Eo am-pikarakarana</option>
+          <option value="Non accepter">Tsy Nekena</option>
         </select>
 
         {/* Pagination */}
@@ -282,7 +286,7 @@ export default function AdminPage() {
           className="bg-blue-500 py-2 px-4 rounded m-2 hover:bg-blue-400 text-white"
           onClick={handleReset}
         >
-          Actualiser
+          Havaozina
         </button>
       </div>
 
@@ -313,7 +317,7 @@ export default function AdminPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Télécharger PDF
+                    Sintomy PDF
                   </a>
                 </td>
                 <td className="p-3 border-b">
@@ -323,7 +327,7 @@ export default function AdminPage() {
                         src={`http://localhost:5000/${upload.instru_mp3}`}
                         type="audio/mp3"
                       />
-                      Votre navigateur ne supporte pas un élément audio.
+                      Tsy manohana singa audio ny navigateur-nao.
                     </audio>
                   </div>
                 </td>
@@ -334,7 +338,7 @@ export default function AdminPage() {
                         src={`http://localhost:5000/${upload.akapela_mp3}`}
                         type="audio/mp3"
                       />
-                      Votre navigateur ne supporte pas un élément audio.
+                      Tsy manohana singa audio ny navigateur-nao.
                     </audio>
                   </div>
                 </td>
@@ -345,7 +349,7 @@ export default function AdminPage() {
                         src={`http://localhost:5000/${upload.final_mp3}`}
                         type="audio/mp3"
                       />
-                      Votre navigateur ne supporte pas un élément audio.
+                      Tsy manohana singa audio ny navigateur-nao.
                     </audio>
                   </div>
                 </td>
@@ -379,7 +383,10 @@ export default function AdminPage() {
                           ? "bg-gray-500 text-white cursor-not-allowed"
                           : "bg-blue-500 text-white"
                       }`}
-                      disabled={upload.status === "accepter" || upload.status === "rejeter"}
+                      disabled={
+                        upload.status === "accepter" ||
+                        upload.status === "rejeter"
+                      }
                     >
                       Accepter
                     </button>
@@ -390,8 +397,10 @@ export default function AdminPage() {
                           ? "bg-gray-500 text-white cursor-not-allowed"
                           : "bg-red-500 text-white"
                       }`}
-                      disabled={upload.status === "rejeter" || upload.status === "accepter"}
-                    
+                      disabled={
+                        upload.status === "rejeter" ||
+                        upload.status === "accepter"
+                      }
                     >
                       Rejeter
                     </button>

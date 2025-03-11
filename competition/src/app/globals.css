@@ -24,4 +24,7 @@
 body {
   @apply bg-cover bg-center bg-fixed;
   background-image: url("/assets/images/fond4.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.95);
 }

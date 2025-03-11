@@ -76,7 +76,7 @@ async function deleteParticipant(req, res) {
   try {
     const participant = await participantService.deleteParticipant(id);
 
-    req.io.emit("participantDeleted", { id: participant.id, status:"rejeter" });
+    req.io.emit("participantRejected", { id: participant.id, status:"rejeter" });
 
     res.send("participant et fichier refuser");
   } catch (error) {

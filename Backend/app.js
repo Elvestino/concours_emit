@@ -81,6 +81,17 @@ io.on("connection", (socket) => {
     io.emit("participantAccepted", { id: candidatId, status: "accepter" });
   });
 
+  socket.on("participant rejetter", (candidatId) => {
+    console.log(`candidat rejetter : ${candidatId}`);
+    io.emit("participantRejected", { id: candidatId, status: "rejeter" });
+  });
+
+  socket.on("participant en traitement", (candidatId) => {
+    console.log(`candidat traiter : ${candidatId}`);
+    io.emit("participantInProgress", { id: candidatId, status: "en traitement" });
+  });
+
+
   socket.on("disconnect", () => {
     console.log("un jury d'est deconnecter");
     activeConnection--;

@@ -21,10 +21,10 @@ const io = new Server(server, {
     origin: "http://localhost:3000",
     methods: "GET, POST, DELETE, PATCH, PUT",
     allowedHeaders: "Content-Type, Authorization",
-    credentials: true
+    credentials: true,
   },
   pingTimeout: 6000,
-  pingInterval: 25000
+  pingInterval: 25000,
 });
 
 const PORT = process.env.PORT || 5000;
@@ -49,8 +49,7 @@ app.use(
 );
 
 // Authentification Routes
-app.use("/api/auth", authRoutes)
-
+app.use("/api/auth", authRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -66,10 +65,9 @@ app.use(
   })
 );
 
-
 io.use((socket, next) => {
   if (activeConnection >= MAX_CONNECTIONS) {
-    return next(new Error("nombre maximal de connection atteint"))
+    return next(new Error("nombre maximal de connection atteint"));
   }
   activeConnection++;
   next();
@@ -85,7 +83,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("un jury d'est deconnecter");
-    activeConnection--
+    activeConnection--;
     socket.disconnect(true);
   });
 });

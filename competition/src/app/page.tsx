@@ -9,21 +9,21 @@ import Footer from "./components/footer";
 
 export default function Home() {
   const [pdfPath, setPdf] = useState<File | null>(null);
-  const [mp3Path, setMp3] = useState<File | null>(null);
+  const [final_mp3, setMp3] = useState<File | null>(null);
   const [instru_mp3, setMp3Instru] = useState<File | null>(null);
   const [akapela_mp3, setMp3Music] = useState<File | null>(null);
 
   const handleUpload = async () => {
-    if (!pdfPath || !mp3Path || !akapela_mp3 || !instru_mp3) {
+    if (!pdfPath || !final_mp3 || !akapela_mp3 || !instru_mp3) {
       Swal.fire("Hadisoana", "Azafady, ampio rakitra PDF sy MP3", "error");
       return;
     }
 
     const formData = new FormData();
     formData.append("pdf", pdfPath);
-    formData.append("mp3", mp3Path);
-    formData.append("mp3", instru_mp3);
-    formData.append("mp3", akapela_mp3);
+    formData.append("instru_mp3", instru_mp3);
+    formData.append("akapela_mp3", akapela_mp3);
+    formData.append("final_mp3", final_mp3);
 
     console.log("FormData lasa :", [...formData.entries()]);
 
@@ -100,18 +100,18 @@ export default function Home() {
               {pdfPath ? pdfPath.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
-          <label htmlFor="mp3" className="mb-1 text-left  text-black">
+          <label htmlFor="instru_mp3" className="mb-1 text-left  text-black">
             Rakitra feon-kira :
           </label>
           <div className="w-full mb-2">
             <label
-              htmlFor="mp3"
+              htmlFor="instru_mp3"
               className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
             >
               Mifidiana rakitra
             </label>
             <input
-              id="mp3"
+              id="instru_mp3"
               accept=".mp3"
               type="file"
               onChange={handleFileMp3Instru}
@@ -121,18 +121,18 @@ export default function Home() {
               {instru_mp3 ? instru_mp3.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
-          <label htmlFor="mp3" className="mb-1 text-left  text-black">
-            Rakitra feo tsisy feonkira :
+          <label htmlFor="akapela_mp3" className="mb-1 text-left  text-black">
+            Rakitra feo tsisy feonkira(Akapela) :
           </label>
           <div className="w-full mb-2">
             <label
-              htmlFor="mp3"
+              htmlFor="akapela_mp3"
               className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
             >
               Mifidiana rakitra
             </label>
             <input
-              id="mp3"
+              id="akapela_mp3"
               accept=".mp3"
               type="file"
               onChange={handleFileMp3Music}
@@ -142,25 +142,25 @@ export default function Home() {
               {akapela_mp3 ? akapela_mp3.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
-          <label htmlFor="mp3" className="mb-1 text-left  text-black">
+          <label htmlFor="final_mp3" className="mb-1 text-left  text-black">
             Rakitra hira :
           </label>
           <div className="w-full mb-2">
             <label
-              htmlFor="mp3"
+              htmlFor="final_mp3"
               className="block w-full cursor-pointer rounded-md border-gray-400 border bg-transparent py-2 text-center text-blue-500 hover:bg-gray-400 hover:text-white transition"
             >
               Mifidiana rakitra
             </label>
             <input
-              id="mp3"
+              id="final_mp3"
               accept=".mp3"
               type="file"
               onChange={handleFileMp3}
               className="hidden"
             />
             <p className="mt-2 text-gray-600">
-              {mp3Path ? mp3Path.name : "Tsy misy rakitra voafantina"}
+              {final_mp3 ? final_mp3.name : "Tsy misy rakitra voafantina"}
             </p>
           </div>
           <button

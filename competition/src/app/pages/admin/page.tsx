@@ -85,7 +85,10 @@ export default function AdminPage() {
         });
         setUploads(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des participants :", error);
+        console.error(
+          "Erreur lors de la récupération des participants :",
+          error
+        );
       }
     };
 
@@ -162,10 +165,11 @@ export default function AdminPage() {
       try {
         const token = localStorage.getItem("token");
 
-        console.log("token rejeter",token)
+        console.log("token rejeter", token);
         await axios.patch(
-          `${API_URL}/participant/${upload.id}/reject`, {},
-          
+          `${API_URL}/participant/${upload.id}/reject`,
+          {},
+
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -238,7 +242,7 @@ export default function AdminPage() {
 
   return (
     <div className="flex flex-col w-full mt-4 animate-fade-in">
-      <h1 className="text-3xl font-bold flex justify-center text-center mb-4 text-black">
+      <h1 className="text-3xl font-bold flex justify-center text-center mb-4 text-white">
         Liste des Participants
       </h1>
       <div className="flex sm:flex-row justify-between items-center mx-4 my-4">
@@ -379,7 +383,10 @@ export default function AdminPage() {
                           ? "bg-gray-500 text-white cursor-not-allowed"
                           : "bg-blue-500 text-white"
                       }`}
-                      disabled={upload.status === "accepter" || upload.status === "rejeter"}
+                      disabled={
+                        upload.status === "accepter" ||
+                        upload.status === "rejeter"
+                      }
                     >
                       Accepter
                     </button>
@@ -390,8 +397,10 @@ export default function AdminPage() {
                           ? "bg-gray-500 text-white cursor-not-allowed"
                           : "bg-red-500 text-white"
                       }`}
-                      disabled={upload.status === "rejeter" || upload.status === "accepter"}
-                    
+                      disabled={
+                        upload.status === "rejeter" ||
+                        upload.status === "accepter"
+                      }
                     >
                       Rejeter
                     </button>

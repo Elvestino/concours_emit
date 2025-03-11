@@ -80,7 +80,7 @@ io.on("connection", (socket) => {
 
   socket.on("accepterCandidat", (candidatId) => {
     console.log(`candidat accepter : ${candidatId}`);
-    io.emit("participantAccepted", { id: candidatId, accepted: true });
+    io.emit("participantAccepted", { id: candidatId, status: "accepter" });
   });
 
   socket.on("disconnect", () => {

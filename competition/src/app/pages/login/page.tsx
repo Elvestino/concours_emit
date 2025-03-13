@@ -27,7 +27,7 @@ export default function Login() {
         // Si le login est correct et le token est renvoyé
         localStorage.setItem("token", data.token); // Stocke le token dans le localStorage
         router.push("/pages/admin"); // Redirection vers la page Admin
-        console.log("token"  , data.token)
+        console.log("token", data.token);
       } else {
         // Si les informations sont incorrectes, on met à jour l'erreur
         setError(data.message || "Erreur lors de la connexion");
@@ -37,14 +37,13 @@ export default function Login() {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Une erreur est survenue.")
+        setError("Une erreur est survenue.");
       }
-      
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center text-black min-h-screen">
       <div className="bg-white border p-8 rounded-lg shadow-lg w-96">
         <h1 className="text-2xl font-bold text-center mb-6">Connexion Admin</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -52,14 +51,16 @@ export default function Login() {
             type="text"
             placeholder="Nom d'utilisateur"
             value={username}
-            onChange={(e) => setUsername(e.target.value)} required
+            onChange={(e) => setUsername(e.target.value)}
+            required
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="password"
             placeholder="Mot de passe"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} required
+            onChange={(e) => setPassword(e.target.value)}
+            required
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button

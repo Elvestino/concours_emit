@@ -148,26 +148,24 @@ export default function AdminPage() {
     }
   };
 
-
   // participant en traitement
   const handleMarkAsInProgress = async (upload: Upload) => {
     try {
       const token = localStorage.getItem("token");
-  
+
       // Envoyer la requête PATCH au backend
       await axios.patch(
         `${API_URL}/participant/${upload.id}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       // Mettre à jour l'état local
       setUploads((prevUploads) =>
         prevUploads.map((u) =>
           u.id === upload.id ? { ...u, status: "en traitement" } : u
         )
       );
-  
     } catch (error) {
       console.error("Erreur :", error);
     }
@@ -320,7 +318,7 @@ export default function AdminPage() {
         <table className="min-w-full border border-gray-500 shadow-4xl rounded-lg overflow-hidden">
           <thead className="bg-blue-400 text-white">
             <tr>
-            <th className="border-b text-center p-1"></th>
+              <th className="border-b text-center p-1"></th>
               <th className="border-b text-center p-1">Laharana</th>
               <th className="border-b text-center p-1">Rakitra PDF</th>
               <th className="border-b text-center p-3">Rakitra feon-kira</th>
@@ -337,10 +335,14 @@ export default function AdminPage() {
                 key={upload.id}
               >
                 <td className="p-3 border-b">
-                {upload.status === "non traiter" && (
-                      <input type="checkbox" checked={false} onChange={() => handleMarkAsInProgress(upload)} className="form-checkbox h-5 w-5  flex items-center justify-center text-blue-600"/>
-                    )}
-
+                  {upload.status === "non traiter" && (
+                    <input
+                      type="checkbox"
+                      checked={false}
+                      onChange={() => handleMarkAsInProgress(upload)}
+                      className="form-checkbox h-5 w-5  flex items-center justify-center text-blue-600"
+                    />
+                  )}
                 </td>
                 <td className="p-3 border-b">{upload.id}</td>
                 <td className="p-3 border-b text-blue-500">
@@ -398,17 +400,16 @@ export default function AdminPage() {
                     }`}
                   >
                     {upload.status === "accepter"
-                      ? "Accepter"
+                      ? "Nekena"
                       : upload.status === "rejeter"
-                      ? "Rejeter"
+                      ? "Lavina"
                       : upload.status === "en traitement"
-                      ? "En traitement"
-                      : "Non traiter"}
+                      ? "Eo am-pikarakarana"
+                      : "Tsy voahodina"}
                   </span>
                 </td>
                 <td className="p-3 border-b flex gap-2 justify-center">
                   <div className="flex gap-2">
-                  
                     <button
                       onClick={() => handleAccept(upload)}
                       className={`p-2 rounded mb-2 ${
@@ -421,7 +422,7 @@ export default function AdminPage() {
                         upload.status === "rejeter"
                       }
                     >
-                      Accepter
+                      Ekena
                     </button>
                     <button
                       onClick={() => handleDelete(upload)}
@@ -435,7 +436,7 @@ export default function AdminPage() {
                         upload.status === "accepter"
                       }
                     >
-                      Rejeter
+                      Lavina
                     </button>
                   </div>
                 </td>

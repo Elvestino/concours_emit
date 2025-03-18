@@ -8,7 +8,7 @@ export default function BarList() {
     {
       id: 2,
       label:
-        "Rehefa mampakatra rakitra ianao dia hahazo ny laharana, dia tehirizo tsara azafady ilay laharanao.",
+        "Rehefa mampiditra rakitra ianao dia hahazo ny laharana, dia tehirizo tsara azafady ilay laharanao.",
     },
     {
       id: 3,
